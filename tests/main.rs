@@ -10,7 +10,7 @@ mod winmouse {
         WinMouse::release("right").expect("Something went wrong");
         // println!("{:?}", WinMouse::get_position());
     }
-
+/*
     #[test]
     fn scroll_wheel() {
         WinMouse::wheel(Some(1));
@@ -25,4 +25,5 @@ mod winmouse {
     fn print_position() {
         println!("{:?}", WinMouse::get_position().unwrap())
     }
+*/
 }
