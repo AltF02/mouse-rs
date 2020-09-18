@@ -1,4 +1,5 @@
 #[cfg(test)]
+#[allow(unused_must_use)]
 mod winmouse {
     use mouse_rs::winmouse::*;
 

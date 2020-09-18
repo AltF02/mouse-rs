@@ -1,9 +1,7 @@
-use libloading::Library;
-
 // #[derive(Copy, Clone)]
 pub struct WinMouse;
 
-#[allow(unreachable_code)]
+#[allow(unreachable_code, unused_variables)]
 impl WinMouse {
     pub fn move_to(x: i32, y: i32) -> Result<(), Box<dyn std::error::Error>> {
         let user32 = libloading::Library::new("user32").unwrap();
