@@ -1,6 +1,6 @@
 [package]
 name = "mouse-rs"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["DankDumpster <staalkoper@gmail.com>"]
 edition = "2018"
 license-file = "LICENSE"
@@ -17,4 +17,7 @@ libloading = "0.6.3"
 
 [dependencies.winapi]
 version = "0.3.9"
-features = ["windef"]
+features = ["windef", "shared"]
+
+[package.metadata.docs.rs]
+targets = ["x86_64-pc-windows-msvc", "i686-pc-windows-msvc"]
