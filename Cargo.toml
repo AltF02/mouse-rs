@@ -3,6 +3,12 @@ name = "mouse-rs"
 version = "0.1.0"
 authors = ["DankDumpster <staalkoper@gmail.com>"]
 edition = "2018"
+license-file = "LICENSE"
+readme = "README.md"
+homepage = "https://github.com/DankDumpster/mouse-rs"
+description = "Library to control your mouse via rust"
+repository = "https://github.com/DankDumpster/mouse-rs"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
