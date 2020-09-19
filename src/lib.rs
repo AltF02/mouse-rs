@@ -11,7 +11,7 @@
 //! 
 //! ```toml
 //! [dependencies]
-//! mouse-rs = "0.1"
+//! mouse-rs = "0.2"
 //! ```
 //! 
 //! ## Example
@@ -22,9 +22,10 @@
 //! use mouse_rs::types::keys::*;
 //! 
 //! fn move_and_press() {
-//!    WinMouse::move_to(500, 500).expect("Unable to move mouse");
-//!    WinMouse::press(RIGHT).expect("Unable to press button");
-//!    WinMouse::release(RIGHT).expect("Unable to release button");
+//!     let mouse = WinMouse::new();
+//!     mouse.move_to(500, 500).expect("Unable to move mouse");
+//!     mouse.press(RIGHT).expect("Unable to press button");
+//!     mouse.release(RIGHT).expect("Unable to release button");
 //! }
 //! ```
 
