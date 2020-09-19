@@ -17,7 +17,7 @@ libloading = "0.6.3"
 
 [dependencies.winapi]
 version = "0.3.9"
-features = ["windef", "shared"]
+features = ["windef"]
 
 [package.metadata.docs.rs]
 targets = ["x86_64-pc-windows-msvc", "i686-pc-windows-msvc"]
