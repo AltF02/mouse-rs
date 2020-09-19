@@ -17,6 +17,6 @@ pub(crate) fn win_translate_key(key: (&str, &str)) -> i32 {
 
         (DOWN, X) => MOUSEEVENTF_XDOWN,
         (UP, X) => MOUSEEVENTF_XUP,
-        _ => {panic!("Invalid parameter passed, please use constants from types::keys")}
+        _ => panic!("Invalid parameter passed, please use constants from types::keys"),
     }
 }

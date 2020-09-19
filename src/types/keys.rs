@@ -1,6 +1,6 @@
 pub const LEFT: &str = "left";
 pub const RIGHT: &str = "right";
-pub const MIDDLE: &str  = "middle";
+pub const MIDDLE: &str = "middle";
 pub const WHEEL: &str = "wheel";
 pub const X: &str = "x";
 pub const X2: &str = "x2";

@@ -1,8 +1,8 @@
 #[cfg(test)]
 #[allow(unused_must_use)]
 mod winmouse {
+    use mouse_rs::types::keys::{MIDDLE, RIGHT};
     use mouse_rs::winmouse::*;
-    use mouse_rs::types::keys::{RIGHT, MIDDLE};
 
     #[test]
     fn move_and_press() {

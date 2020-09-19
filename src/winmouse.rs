@@ -1,16 +1,13 @@
-
-
-
-use winapi::shared::windef::POINT;
 use crate::types::keys::*;
 use crate::utils::win_translate_key;
 use libloading::Library;
+use winapi::shared::windef::POINT;
 
 /// Struct for the mouse in windows
 ///
 /// This struct represents a windows mouse and doesn't hold any values
 pub struct WinMouse {
-    user32: Library
+    user32: Library,
 }
 
 #[allow(unreachable_code, unused_variables)]
@@ -19,13 +16,28 @@ impl WinMouse {
         return match button {
             X => (X, 0x10000),
             X2 => (X2, 0x20000),
-            _ => (button, 0)
-        }
+            _ => (button, 0),
+        };
     }
 
-    fn mouse_event(&self, dw_flags: i32, dx: i32, dy: i32, dw_data: i32, dw_extra_info: i32) -> Result<(), Box<dyn std::error::Error>> {
+    fn mouse_event(
+        &self,
+        dw_flags: i32,
+        dx: i32,
+        dy: i32,
+        dw_data: i32,
+        dw_extra_info: i32,
+    ) -> Result<(), Box<dyn std::error::Error>> {
         unsafe {
-            let mouse_event: libloading::Symbol<unsafe extern fn(dw_flags: i32, dx: i32, dy: i32, dw_data: i32, dw_extra_info: i32)> = self.user32.get(b"mouse_event")?;
+            let mouse_event: libloading::Symbol<
+                unsafe extern "C" fn(
+                    dw_flags: i32,
+                    dx: i32,
+                    dy: i32,
+                    dw_data: i32,
+                    dw_extra_info: i32,
+                ),
+            > = self.user32.get(b"mouse_event")?;
             Ok(mouse_event(dw_flags, dx, dy, dw_data, dw_extra_info))
         }
     }
@@ -33,7 +45,7 @@ impl WinMouse {
     /// This method creates a new mouse instance, must always be run before anything else
     pub fn new() -> WinMouse {
         WinMouse {
-            user32: libloading::Library::new("user32").unwrap()
+            user32: libloading::Library::new("user32").unwrap(),
         }
     }
 
@@ -55,11 +67,11 @@ impl WinMouse {
     /// ```
     pub fn move_to(&self, x: i32, y: i32) -> Result<(), Box<dyn std::error::Error>> {
         unsafe {
-            let set_cursor_pos: libloading::Symbol<unsafe extern fn(x: i32, y: i32)> = self.user32.get(b"SetCursorPos")?;
+            let set_cursor_pos: libloading::Symbol<unsafe extern "C" fn(x: i32, y: i32)> =
+                self.user32.get(b"SetCursorPos")?;
             Ok(set_cursor_pos(x, y))
         }
     }
-
 
     /// This method presses the given button in
     ///
@@ -100,7 +112,8 @@ impl WinMouse {
     fn get_position(&self) -> Result<POINT, Box<dyn std::error::Error>> {
         // TODO Make this work
         unsafe {
-            let get_cursor_pos: libloading::Symbol<unsafe extern fn() -> POINT> = self.user32.get(b"GetCursorPos")?;
+            let get_cursor_pos: libloading::Symbol<unsafe extern "C" fn() -> POINT> =
+                self.user32.get(b"GetCursorPos")?;
             Ok(get_cursor_pos())
         }
     }
