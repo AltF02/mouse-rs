@@ -1,4 +1,4 @@
-![Rust](https://github.com/DankDumpster/mouse-rs/workflows/Rust/badge.svg) ![Docs](https://docs.rs/mouse-rs/badge.svg)
+![Rust](https://github.com/DankDumpster/mouse-rs/workflows/Rust/badge.svg?style=flat-square) ![Docs](https://docs.rs/mouse-rs/badge.svg?style=flat-square) ![Crates.io](https://img.shields.io/crates/v/mouse-rs)
 # Mouse-rs
 
 Mouse-rs is a rust library for controlling your mouse from a rust program, without having to go into your kernel yourself.
