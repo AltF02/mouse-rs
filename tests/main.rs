@@ -20,10 +20,10 @@ mod winmouse {
     fn press_button() {
         WinMouse::press("left");
     }
-
+*/
     #[test]
     fn print_position() {
-        println!("{:?}", WinMouse::get_position().unwrap())
+        let pos = WinMouse::get_position().unwrap();
+        println!("{:?}, {:?}", pos.x, pos.y)
     }
-*/
 }

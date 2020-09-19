@@ -1,6 +1,8 @@
 // #[derive(Copy, Clone)]
 pub struct WinMouse;
 
+use winapi::shared::windef::POINT;
+
 #[allow(unreachable_code, unused_variables)]
 impl WinMouse {
     pub fn move_to(x: i32, y: i32) -> Result<(), Box<dyn std::error::Error>> {
@@ -29,13 +31,11 @@ impl WinMouse {
         }
     }
 
-    pub fn get_position() -> Result<(i32, i32), Box<dyn std::error::Error>> {
-        unimplemented!();
+    pub fn get_position() -> Result<POINT, Box<dyn std::error::Error>> {
         // TODO Make this work
         let user32 = libloading::Library::new("user32").unwrap();
         unsafe {
-            let get_cursor_pos: libloading::Symbol<unsafe extern fn() -> (i32, i32)> = user32.get(b"GetCursorPos")?;
-            println!("{:?}", get_cursor_pos());
+            let get_cursor_pos: libloading::Symbol<unsafe extern fn() -> POINT> = user32.get(b"GetCursorPos")?;
             Ok(get_cursor_pos())
         }
     }
