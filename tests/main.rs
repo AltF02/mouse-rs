@@ -2,7 +2,7 @@
 #[allow(unused_must_use)]
 mod winmouse {
     use mouse_rs::winmouse::*;
-    use mouse_rs::types::event_types::{RIGHT, MIDDLE};
+    use mouse_rs::types::keys::{RIGHT, MIDDLE};
 
     #[test]
     fn move_and_press() {
