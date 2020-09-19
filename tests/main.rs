@@ -6,20 +6,23 @@ mod winmouse {
 
     #[test]
     fn move_and_press() {
-        WinMouse::move_to(500, 500).expect("Something went wrong");
-        WinMouse::press(RIGHT).expect("Something went wrong");
-        WinMouse::release(RIGHT).expect("Something went wrong");
+        let mouse = WinMouse::new();
+        mouse.move_to(500, 500);
+        mouse.press(RIGHT).expect("Unable to press button");
+        mouse.release(RIGHT).expect("Something went wrong");
         // println!("{:?}", WinMouse::get_position());
     }
 
     #[test]
     fn scroll_wheel() {
-        WinMouse::wheel(1);
+        let mouse = WinMouse::new();
+        mouse.wheel(1);
     }
 
     #[test]
     fn press_button() {
-        WinMouse::press(MIDDLE);
-        WinMouse::release(MIDDLE);
+        let mouse = WinMouse::new();
+        mouse.press(MIDDLE);
+        mouse.release(MIDDLE);
     }
 }
