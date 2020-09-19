@@ -1,4 +1,7 @@
-// #[derive(Copy, Clone)]
+
+/// Struct for the mouse in windows
+///
+/// This struct represents a windows mouse and doesn't hold any values
 pub struct WinMouse;
 
 use winapi::shared::windef::POINT;
@@ -22,7 +25,21 @@ impl WinMouse {
             Ok(mouse_event(dw_flags, dx, dy, dw_data, dw_extra_info))
         }
     }
-
+    /// This method moves the windows mouse around
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use mouse_rs::{
+    ///     winmouse::WinMouse,
+    ///     types::keys::*
+    /// };
+    ///
+    /// fn move_mouse() {
+    ///     WinMouse::move_to(500, 500).expect("Unable to move mouse")
+    /// }
+    ///
+    /// ```
     pub fn move_to(x: i32, y: i32) -> Result<(), Box<dyn std::error::Error>> {
         let user32 = libloading::Library::new("user32").unwrap();
         unsafe {
@@ -31,6 +48,28 @@ impl WinMouse {
         }
     }
 
+
+    /// This method presses the given button in
+    ///
+    /// *NOTE: This doesn't release the button so it will keep pressing*
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use mouse_rs::{
+    ///     winmouse::WinMouse,
+    ///     types::keys::*
+    /// };
+    ///
+    /// fn press_button() {
+    ///     WinMouse::press(LEFT).expect("Unable to press button"); // This will keep pressing
+    /// }
+    ///
+    /// fn press_and_release_button() {
+    ///     WinMouse::press(RIGHT).expect("Unable to press button");
+    ///     WinMouse::release(RIGHT).expect("Unable to release button"); // This will press the right mouse quickly
+    /// }
+    /// ```
     pub fn press(button: &str) -> Result<(), Box<dyn std::error::Error>> {
         let user32 = libloading::Library::new("user32").unwrap();
         let (button, data) = WinMouse::translate_button(button);
@@ -38,6 +77,7 @@ impl WinMouse {
         WinMouse::mouse_event(code, 0, 0, data, 0)
     }
 
+    /// This will release the button as noted above
     pub fn release(button: &str) -> Result<(), Box<dyn std::error::Error>> {
         let user32 = libloading::Library::new("user32").unwrap();
         let (button, data) = WinMouse::translate_button(button);
@@ -55,9 +95,33 @@ impl WinMouse {
         }
     }
 
-    pub fn wheel(delta: Option<i32>) -> Result<(), Box<dyn std::error::Error>> {
+    /// This will scroll the mouse,
+    ///
+    /// For scrolling down use negative values, for scrolling up use positive values
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use mouse_rs::{
+    ///     winmouse::WinMouse,
+    ///     types::keys::*
+    /// };
+    ///
+    /// fn scroll_up() {
+    ///     WinMouse::wheel(2);
+    /// }
+    ///
+    /// fn scroll_down() {
+    ///     WinMouse::wheel(-2);
+    /// }
+    /// ```
+    pub fn wheel(delta: i32) -> Result<(), Box<dyn std::error::Error>> {
         let code = win_translate_key((WHEEL, VERTICAL));
-        let actual_delta = delta.unwrap_or(1);
-        WinMouse::mouse_event(code, 0, 0, actual_delta * 120, 0)
+        WinMouse::mouse_event(code, 0, 0, delta * 120, 0)
+    }
+
+    /// This is the exact same as wheel
+    pub fn scroll(delta: i32) -> Result<(), Box<dyn std::error::Error>> {
+        WinMouse::wheel(delta)
     }
 }

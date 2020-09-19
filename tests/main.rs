@@ -14,18 +14,12 @@ mod winmouse {
 
     #[test]
     fn scroll_wheel() {
-        WinMouse::wheel(Some(1));
+        WinMouse::wheel(1);
     }
 
     #[test]
     fn press_button() {
         WinMouse::press(MIDDLE);
         WinMouse::release(MIDDLE);
-    }
-
-    #[test]
-    fn print_position() {
-        let pos = WinMouse::get_position().unwrap();
-        println!("{:?}, {:?}", pos.x, pos.y)
     }
 }
