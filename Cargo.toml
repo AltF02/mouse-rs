@@ -5,7 +5,7 @@ authors = ["DankDumpster <staalkoper@gmail.com>"]
 edition = "2018"
 license-file = "LICENSE"
 readme = "README.md"
-homepage = "https://github.com/DankDumpster/mouse-rs"
+homepage = "https://docs.rs/mouse-rs/*/mouse_rs/"
 description = "Library to control your mouse via rust"
 repository = "https://github.com/DankDumpster/mouse-rs"
 
