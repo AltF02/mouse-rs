@@ -109,12 +109,26 @@ impl WinMouse {
         self.mouse_event(code, 0, 0, data, 0)
     }
 
-    fn get_position(&self) -> Result<POINT, Box<dyn std::error::Error>> {
-        // TODO Make this work
+    /// This gets the current mouse position
+    ///
+    /// # Example
+    ///
+    /// ```no_run
+    /// use mouse_rs::winmouse::*;
+    ///
+    /// fn get_post() {
+    ///     let mouse = WinMouse::new();
+    ///     let pos = mouse.get_position().unwrap();
+    ///     println!("X = {}, Y = {}", pos.x, pos.y)
+    /// }
+    /// ```
+    pub fn get_position(&self) -> Result<POINT, Box<dyn std::error::Error>> {
+        let mut pos: POINT = POINT { x: 0, y: 0 };
         unsafe {
-            let get_cursor_pos: libloading::Symbol<unsafe extern "C" fn() -> POINT> =
+            let get_cursor_pos: libloading::Symbol<unsafe extern "C" fn(lp_point: &POINT) -> bool> =
                 self.user32.get(b"GetCursorPos")?;
-            Ok(get_cursor_pos())
+            get_cursor_pos(&mut pos);
+            Ok(pos)
         }
     }
 

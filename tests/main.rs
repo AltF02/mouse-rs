@@ -10,7 +10,6 @@ mod winmouse {
         mouse.move_to(500, 500);
         mouse.press(RIGHT).expect("Unable to press button");
         mouse.release(RIGHT).expect("Something went wrong");
-        // println!("{:?}", WinMouse::get_position());
     }
 
     #[test]
@@ -24,5 +23,11 @@ mod winmouse {
         let mouse = WinMouse::new();
         mouse.press(MIDDLE);
         mouse.release(MIDDLE);
+    }
+
+    #[test]
+    fn print_post() {
+        let mouse = WinMouse::new();
+        println!("{:?}, {:?}", mouse.get_position().unwrap().y, mouse.get_position().unwrap().x);
     }
 }
