@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-use crate::types::{keys::*, Point};
+use crate::types::{keys::Keys, Point};
 use libloading::Library;
 use winapi::shared::windef::POINT;
 
@@ -16,22 +16,22 @@ const MOUSEEVENTF_MIDDLEUP: i32 = 0x40;
 const MOUSEEVENTF_XDOWN: i32 = 0x0080;
 const MOUSEEVENTF_XUP: i32 = 0x0100;
 
-fn win_translate_key(key: (&str, &str)) -> i32 {
+fn win_translate_key(key: (&Keys, &Keys)) -> i32 {
     match key {
-        (WHEEL, HORIZONTAL) => MOUSEEVENTF_HWHEEL,
-        (WHEEL, VERTICAL) => MOUSEEVENTF_WHEEL,
+        (Keys::WHEEL, Keys::HORIZONTAL) => MOUSEEVENTF_HWHEEL,
+        (Keys::WHEEL, Keys::VERTICAL) => MOUSEEVENTF_WHEEL,
 
-        (DOWN, LEFT) => MOUSEEVENTF_LEFTDOWN,
-        (UP, LEFT) => MOUSEEVENTF_LEFTUP,
+        (Keys::DOWN, Keys::LEFT) => MOUSEEVENTF_LEFTDOWN,
+        (Keys::UP, Keys::LEFT) => MOUSEEVENTF_LEFTUP,
 
-        (DOWN, RIGHT) => MOUSEEVENTF_RIGHTDOWN,
-        (UP, RIGHT) => MOUSEEVENTF_RIGHTUP,
+        (Keys::DOWN, Keys::RIGHT) => MOUSEEVENTF_RIGHTDOWN,
+        (Keys::UP, Keys::RIGHT) => MOUSEEVENTF_RIGHTUP,
 
-        (DOWN, MIDDLE) => MOUSEEVENTF_MIDDLEDOWN,
-        (UP, MIDDLE) => MOUSEEVENTF_MIDDLEUP,
+        (Keys::DOWN, Keys::MIDDLE) => MOUSEEVENTF_MIDDLEDOWN,
+        (Keys::UP, Keys::MIDDLE) => MOUSEEVENTF_MIDDLEUP,
 
-        (DOWN, X) => MOUSEEVENTF_XDOWN,
-        (UP, X) => MOUSEEVENTF_XUP,
+        (Keys::DOWN, Keys::X) => MOUSEEVENTF_XDOWN,
+        (Keys::UP, Keys::X) => MOUSEEVENTF_XUP,
         _ => panic!("Invalid parameter passed, please use constants from types::keys"),
     }
 }
@@ -51,10 +51,10 @@ pub struct Mouse {
 
 #[allow(unreachable_code, unused_variables)]
 impl Mouse {
-    fn translate_button(button: &str) -> (&str, i32) {
+    fn translate_button(button: &Keys) -> (&Keys, i32) {
         return match button {
-            X => (X, 0x10000),
-            X2 => (X2, 0x20000),
+            Keys::X => (&Keys::X, 0x10000),
+            Keys::X2 => (&Keys::X2, 0x20000),
             _ => (button, 0),
         };
     }
@@ -95,15 +95,15 @@ impl Mouse {
         }
     }
 
-    pub fn press(&self, button: &str) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn press(&self, button: &Keys) -> Result<(), Box<dyn std::error::Error>> {
         let (button, data) = Mouse::translate_button(button);
-        let code = win_translate_key((DOWN, button));
+        let code = win_translate_key((&Keys::DOWN, button));
         self.mouse_event(code, 0, 0, data, 0)
     }
 
-    pub fn release(&self, button: &str) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn release(&self, button: &Keys) -> Result<(), Box<dyn std::error::Error>> {
         let (button, data) = Mouse::translate_button(button);
-        let code = win_translate_key((UP, button));
+        let code = win_translate_key((&Keys::UP, button));
         self.mouse_event(code, 0, 0, data, 0)
     }
 
@@ -118,7 +118,7 @@ impl Mouse {
     }
 
     pub fn wheel(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
-        let code = win_translate_key((WHEEL, VERTICAL));
+        let code = win_translate_key((&Keys::WHEEL, &Keys::VERTICAL));
         self.mouse_event(code, 0, 0, delta * 120, 0)
     }
 
