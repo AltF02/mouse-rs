@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-
 use crate::types::{keys::*, Point};
 use libloading::Library;
 use winapi::shared::windef::POINT;

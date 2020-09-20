@@ -1,8 +1,8 @@
 use crate::{sys, types::Point};
 
-/// Struct for the mouse in windows
+/// Struct for the mouse
 ///
-/// This struct represents a windows mouse and doesn't hold any values
+/// This struct represents a mouse and doesn't hold any values
 pub struct Mouse(sys::Mouse);
 
 #[allow(unreachable_code, unused_variables)]
@@ -12,7 +12,7 @@ impl Mouse {
         Mouse(sys::Mouse::new())
     }
 
-    /// This method moves the windows mouse around
+    /// This method moves the mouse around
     ///
     /// # Examples
     ///
@@ -101,5 +101,11 @@ impl Mouse {
     /// This is the exact same as wheel
     pub fn scroll(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
         self.0.scroll(delta)
+    }
+
+    // Does the exact same thing as press and release combined, but into one function
+    pub fn click(&self, button: &'a str) -> Result<(), Box<dyn std::error::Error + 'a>> {
+        self.0.press(button).unwrap_or(());
+        self.0.release(button)
     }
 }
