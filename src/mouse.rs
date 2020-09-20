@@ -1,3 +1,4 @@
+use crate::types::keys::Keys;
 use crate::{sys, types::Point};
 
 /// Struct for the mouse
@@ -36,25 +37,25 @@ impl Mouse {
     /// # Examples
     ///
     /// ```no_run
-    /// use mouse_rs::{types::keys::*, Mouse};
+    /// use mouse_rs::{types::keys::Keys, Mouse};
     ///
     /// fn press_button() {
     ///     let mouse = Mouse::new();
-    ///     mouse.press(LEFT).expect("Unable to press button"); // This will keep pressing
+    ///     mouse.press(&Keys::LEFT).expect("Unable to press button"); // This will keep pressing
     /// }
     ///
     /// fn press_and_release_button() {
     ///     let mouse = Mouse::new();
-    ///     mouse.press(RIGHT).expect("Unable to press button");
-    ///     mouse.release(RIGHT).expect("Unable to release button"); // This will press the right mouse quickly
+    ///     mouse.press(&Keys::RIGHT).expect("Unable to press button");
+    ///     mouse.release(&Keys::RIGHT).expect("Unable to release button"); // This will press the right mouse quickly
     /// }
     /// ```
-    pub fn press<'a>(&self, button: &'a str) -> Result<(), Box<dyn std::error::Error + 'a>> {
+    pub fn press<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn std::error::Error + 'a>> {
         self.0.press(button)
     }
 
     /// This will release the button as noted above
-    pub fn release<'a>(&self, button: &'a str) -> Result<(), Box<dyn std::error::Error + 'a>> {
+    pub fn release<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn std::error::Error + 'a>> {
         self.0.release(button)
     }
 
@@ -104,7 +105,7 @@ impl Mouse {
     }
 
     // Does the exact same thing as press and release combined, but into one function
-    pub fn click<'a>(&self, button: &'a str) -> Result<(), Box<dyn std::error::Error + 'a>> {
+    pub fn click<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn std::error::Error + 'a>> {
         self.0.press(button).unwrap_or(());
         self.0.release(button)
     }
