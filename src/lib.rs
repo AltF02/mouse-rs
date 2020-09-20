@@ -1,4 +1,3 @@
-#![feature(in_band_lifetimes)]
 //! ![Rust](https://github.com/DankDumpster/mouse-rs/workflows/Rust/badge.svg)
 //! # Mouse-rs
 //!
