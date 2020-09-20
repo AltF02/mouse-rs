@@ -1,5 +1,6 @@
-use crate::types::keys::*;
-use crate::utils::win_translate_key;
+#![allow(dead_code)]
+
+use crate::types::{keys::*, Point};
 use libloading::Library;
 use winapi::shared::windef::POINT;
 
@@ -33,6 +34,15 @@ fn win_translate_key(key: (&str, &str)) -> i32 {
         (DOWN, X) => MOUSEEVENTF_XDOWN,
         (UP, X) => MOUSEEVENTF_XUP,
         _ => panic!("Invalid parameter passed, please use constants from types::keys"),
+    }
+}
+
+impl From<POINT> for Point {
+    fn from(other: POINT) -> Point {
+        Point {
+            x: other.x as _,
+            y: other.y as _,
+        }
     }
 }
 
@@ -98,13 +108,13 @@ impl Mouse {
         self.mouse_event(code, 0, 0, data, 0)
     }
 
-    pub fn get_position(&self) -> Result<POINT, Box<dyn std::error::Error>> {
+    pub fn get_position(&self) -> Result<Point, Box<dyn std::error::Error>> {
         let mut pos: POINT = POINT { x: 0, y: 0 };
         unsafe {
             let get_cursor_pos: libloading::Symbol<unsafe extern "C" fn(lp_point: &POINT) -> bool> =
                 self.user32.get(b"GetCursorPos")?;
             get_cursor_pos(&mut pos);
-            Ok(pos)
+            Ok(pos.into())
         }
     }
 
