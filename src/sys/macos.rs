@@ -75,7 +75,7 @@ impl Mouse {
     pub fn press<'a>(&self, button: &'a str) -> Result<(), Box<dyn error::Error + 'a>> {
         let (event_type, mouse_button) = match button {
             _ if button == LEFT => Ok((CGEventType::LeftMouseDown, CGMouseButton::Left)),
-            _ if button == MIDDLE => Ok((CGEventType::LeftMouseDown, CGMouseButton::Center)),
+            _ if button == MIDDLE => Ok((CGEventType::OtherMouseDown, CGMouseButton::Center)),
             _ if button == RIGHT => Ok((CGEventType::RightMouseDown, CGMouseButton::Right)),
             _ => Err(Box::new(Error::InvalidButtonStr(button))),
         }?;
@@ -95,7 +95,7 @@ impl Mouse {
     pub fn release<'a>(&self, button: &'a str) -> Result<(), Box<dyn error::Error + 'a>> {
         let (event_type, mouse_button) = match button {
             _ if button == LEFT => Ok((CGEventType::LeftMouseUp, CGMouseButton::Left)),
-            _ if button == MIDDLE => Ok((CGEventType::LeftMouseUp, CGMouseButton::Center)),
+            _ if button == MIDDLE => Ok((CGEventType::OtherMouseUp, CGMouseButton::Center)),
             _ if button == RIGHT => Ok((CGEventType::RightMouseUp, CGMouseButton::Right)),
             _ => Err(Box::new(Error::InvalidButtonStr(button))),
         }?;
