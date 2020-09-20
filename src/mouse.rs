@@ -104,7 +104,7 @@ impl Mouse {
     }
 
     // Does the exact same thing as press and release combined, but into one function
-    pub fn click(&self, button: &'a str) -> Result<(), Box<dyn std::error::Error + 'a>> {
+    pub fn click<'a>(&self, button: &'a str) -> Result<(), Box<dyn std::error::Error + 'a>> {
         self.0.press(button).unwrap_or(());
         self.0.release(button)
     }
