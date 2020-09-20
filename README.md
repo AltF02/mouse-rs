@@ -4,7 +4,7 @@
 Mouse-rs is a rust library for controlling your mouse from a rust program, without having to go into your kernel yourself.
 
 This project was loosely based on the python [mouse](https://github.com/boppreh/mouse/) library.
-Currently it only supports windows based machines but I plan on adding unix later.
+Currently it supports macos and windows, linux is on the roadmap
 
 ## Installation
 Add mouse-rs to your cargo.toml
