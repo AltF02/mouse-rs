@@ -22,5 +22,9 @@ libloading = "0.6.3"
 version = "0.3.9"
 features = ["windef"]
 
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2.77"
+x11 = "2.18.2"
+
 [package.metadata.docs.rs]
 targets = ["x86_64-pc-windows-msvc", "i686-pc-windows-msvc"]

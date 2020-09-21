@@ -126,8 +126,4 @@ impl Mouse {
 
         Ok(())
     }
-
-    pub fn scroll(&self, delta: i32) -> Result<(), Box<dyn error::Error>> {
-        self.wheel(delta)
-    }
 }

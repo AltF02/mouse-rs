@@ -121,8 +121,4 @@ impl Mouse {
         let code = win_translate_key((&Keys::WHEEL, &Keys::VERTICAL));
         self.mouse_event(code, 0, 0, delta * 120, 0)
     }
-
-    pub fn scroll(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
-        self.wheel(delta)
-    }
 }
