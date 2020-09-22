@@ -1,6 +1,9 @@
-use std::error::Error;
 use crate::types::keys::Keys;
 use crate::types::Point;
+use std::error::Error;
+
+use x11::xlib::{XWarpPointer, Display, AspectRatio, XDefaultRootWindow, XOpenDisplay};
+use x11::xtest::XTestFakeButtonEvent;
 
 pub struct Mouse;
 
@@ -10,7 +13,14 @@ impl Mouse {
     }
 
     pub fn move_to(&self, x: i32, y: i32) -> Result<(), Box<dyn Error>> {
-        unimplemented!()
+        unsafe {
+            let dpy = XOpenDisplay(&mut 1);
+            println!("{:?}", time::Instant::now());
+            // XTestFakeButtonEvent(dpy, 1, 1, );
+            println!("{:?}", dpy);
+        }
+        Ok(())
+        // unimplemented!()
     }
 
     pub fn press<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn Error>> {
