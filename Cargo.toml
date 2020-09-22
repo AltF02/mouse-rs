@@ -8,6 +8,7 @@ readme = "README.md"
 homepage = "https://docs.rs/mouse-rs/*/mouse_rs/"
 description = "Library to control your mouse via rust"
 repository = "https://github.com/DankDumpster/mouse-rs"
+keywords = ["mouse", "input", "winapi"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -24,3 +25,4 @@ features = ["windef"]
 
 [package.metadata.docs.rs]
 targets = ["x86_64-pc-windows-msvc", "i686-pc-windows-msvc"]
+
