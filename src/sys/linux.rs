@@ -63,6 +63,7 @@ impl Mouse {
     }
 
     pub fn get_position(&self) -> Result<Point, Box<dyn Error>> {
+
         unimplemented!()
     }
 
