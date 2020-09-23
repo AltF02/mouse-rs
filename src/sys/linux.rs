@@ -1,5 +1,3 @@
-mod xdo;
-
 use crate::types::keys::Keys;
 use crate::types::Point;
 use std::error::Error;
@@ -12,6 +10,15 @@ use std::{ptr};
 type XDO = *const c_void;
 type WINDOW = c_int;
 
+fn xdo_translate_key(key: &Keys) -> c_int {
+    match key {
+        Keys::LEFT => 1,
+        Keys::MIDDLE => 2,
+        Keys::RIGHT => 3,
+        _ => panic!("Invalid key passed")
+    }
+}
+
 pub struct Mouse {
     xdo: XDO,
     current_window: c_int
@@ -21,8 +28,8 @@ pub struct Mouse {
 extern "C" {
     fn xdo_new(display: *const c_char) -> XDO;
 
-
     fn xdo_move_mouse(xdo: XDO, x: c_int, y: c_int, screen: c_int) -> c_int;
+    fn xdo_mouse_down(xdo: XDO, window: WINDOW, button: c_int);
     fn xdo_mouse_up(xdo: XDO, window: WINDOW, button: c_int);
 }
 
@@ -41,12 +48,18 @@ impl Mouse {
         Ok(())
     }
 
-    pub fn press<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn Error>> {
-        unimplemented!()
+    pub fn press<'a>(&self, key: &'a Keys) -> Result<(), Box<dyn Error>> {
+        unsafe {
+            xdo_mouse_down(self.xdo, self.current_window, xdo_translate_key(button))
+        }
+        Ok(())
     }
 
-    pub fn release<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn Error>> {
-        unimplemented!()
+    pub fn release<'a>(&self, key: &'a Keys) -> Result<(), Box<dyn Error>> {
+        unsafe {
+            xdo_mouse_up(self.xdo, self.current_window, xdo_translate_key(button))
+        }
+        Ok(())
     }
 
     pub fn get_position(&self) -> Result<Point, Box<dyn Error>> {
