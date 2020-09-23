@@ -50,14 +50,14 @@ impl Mouse {
 
     pub fn press<'a>(&self, key: &'a Keys) -> Result<(), Box<dyn Error>> {
         unsafe {
-            xdo_mouse_down(self.xdo, self.current_window, xdo_translate_key(button))
+            xdo_mouse_down(self.xdo, self.current_window, xdo_translate_key(key))
         }
         Ok(())
     }
 
     pub fn release<'a>(&self, key: &'a Keys) -> Result<(), Box<dyn Error>> {
         unsafe {
-            xdo_mouse_up(self.xdo, self.current_window, xdo_translate_key(button))
+            xdo_mouse_up(self.xdo, self.current_window, xdo_translate_key(key))
         }
         Ok(())
     }
