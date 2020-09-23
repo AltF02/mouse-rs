@@ -2,7 +2,8 @@ name: Rust
 
 on:
   push:
-    branches: [ master ]
+    branches-ignore:
+      - 'releases/**-alpha'
   pull_request:
     branches: [ master ]
 
@@ -29,3 +30,13 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
+  
+  linux-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install xdo
+      run: apt install libxdo-dev
+    - name: Build
+      run: cargo build --verbose
