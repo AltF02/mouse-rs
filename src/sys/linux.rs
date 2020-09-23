@@ -31,6 +31,7 @@ extern "C" {
     fn xdo_move_mouse(xdo: XDO, x: c_int, y: c_int, screen: c_int) -> c_int;
     fn xdo_mouse_down(xdo: XDO, window: WINDOW, button: c_int);
     fn xdo_mouse_up(xdo: XDO, window: WINDOW, button: c_int);
+    fn xdo_click_window(xdo: XDO, window: WINDOW, button: c_int);
 }
 
 impl Mouse {
@@ -63,11 +64,21 @@ impl Mouse {
     }
 
     pub fn get_position(&self) -> Result<Point, Box<dyn Error>> {
-
         unimplemented!()
     }
 
-    pub fn wheel(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
-        unimplemented!()
+    pub fn wheel(&self, mut delta: i32) -> Result<(), Box<dyn std::error::Error>> {
+        let key = if delta < 0 { 4 } else { 5 };
+
+        if delta < 0 {
+            delta = -delta;
+        }
+
+        for _ in 0..delta {
+            unsafe {
+                xdo_click_window(self.xdo, self.current_window, key);
+            }
+        }
+        Ok(())
     }
 }
