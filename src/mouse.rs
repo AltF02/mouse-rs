@@ -101,7 +101,7 @@ impl Mouse {
 
     /// This is the exact same as wheel
     pub fn scroll(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
-        self.0.scroll(delta)
+        self.0.wheel(delta)
     }
 
     // Does the exact same thing as press and release combined, but into one function

@@ -27,10 +27,7 @@ mod mouse {
     #[test]
     fn print_post() {
         let mouse = Mouse::new();
-        println!(
-            "{:?}, {:?}",
-            mouse.get_position().unwrap().y,
-            mouse.get_position().unwrap().x
-        );
+        let pos = mouse.get_position().unwrap();
+        println!("{:?}, {:?}", pos.y, pos.x);
     }
 }
