@@ -33,7 +33,7 @@ fn move_and_press() {
 For more information please visit the [docs](https://docs.rs/mouse-rs/*/mouse_rs/)
 
 ## Linux disclaimer
-Sometimes linux can run into problems you'd have to install a library.
+If you're running into problems building on linux you need to install libxdo-dev.
 
 #### Ubuntu
 ```bash

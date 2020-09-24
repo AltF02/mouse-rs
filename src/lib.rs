@@ -27,6 +27,14 @@
 //!     mouse.release(&Keys::RIGHT).expect("Unable to release button");
 //! }
 //! ```
+//!
+//! ## Linux disclaimer
+//! If you're running into problems building on linux you need to install libxdo-dev.
+//!
+//! #### Ubuntu
+//! ```bash
+//! sudo apt-get install libxdo-dev
+//! ```
 
 mod mouse;
 mod sys;
