@@ -11,7 +11,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! mouse-rs = "0.3"
+//! mouse-rs = "0.4"
 //! ```
 //!
 //! ## Example
