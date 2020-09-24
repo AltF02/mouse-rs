@@ -4,14 +4,14 @@
 Mouse-rs is a rust library for controlling your mouse from a rust program, without having to go into your kernel yourself.
 
 This project was loosely based on the python [mouse](https://github.com/boppreh/mouse/) library.
-Currently it supports macos and windows, linux is on the roadmap
+Currently it supports macos, windows and linux! If you need any other OS added please open an [issue](https://github.com/DankDumpster/mouse-rs/issues/new)
 
 ## Installation
 Add mouse-rs to your cargo.toml
 
 ```toml
 [dependencies]
-mouse-rs = "0.4"
+mouse-rs = "0.3"
 ```
 
 ## Example
@@ -33,7 +33,7 @@ fn move_and_press() {
 For more information please visit the [docs](https://docs.rs/mouse-rs/*/mouse_rs/)
 
 ## Linux disclaimer
-If you're running into problems building on linux you need to install libxdo-dev.
+Sometimes linux can run into problems you'd have to install a library.
 
 #### Ubuntu
 ```bash
