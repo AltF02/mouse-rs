@@ -5,7 +5,6 @@ pub enum Keys {
     WHEEL,
     X,
     X2,
-
     UP,
     DOWN,
     VERTICAL,

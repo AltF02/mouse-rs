@@ -9,6 +9,7 @@ mod mouse {
         mouse.move_to(500, 500);
         mouse.press(&Keys::RIGHT).expect("Unable to press button");
         mouse.release(&Keys::RIGHT).expect("Something went wrong");
+        mouse.click(&Keys::WHEEL).expect("Something went wrong");
     }
 
     #[test]
@@ -24,10 +25,10 @@ mod mouse {
         mouse.release(&Keys::MIDDLE);
     }
 
-    #[test]
-    fn print_post() {
-        let mouse = Mouse::new();
-        let pos = mouse.get_position().unwrap();
-        println!("{:?}, {:?}", pos.y, pos.x);
-    }
+    // #[test]
+    // fn print_post() {
+    //     let mouse = Mouse::new();
+    //     let pos = mouse.get_position().unwrap();
+    //     println!("{:?}, {:?}", pos.y, pos.x);
+    // }
 }
