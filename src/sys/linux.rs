@@ -13,9 +13,9 @@ type WINDOW = c_int;
 fn xdo_translate_key(key: &Keys) -> c_int {
     match key {
         Keys::LEFT => 1,
-        Keys::MIDDLE => 2,
+        Keys::WHEEL | Keys::MIDDLE => 2,
         Keys::RIGHT => 3,
-        _ => panic!("Invalid key passed")
+        _ => panic!("Invalid key passed: {:?}", key)
     }
 }
 
