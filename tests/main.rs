@@ -7,6 +7,8 @@ mod mouse {
     fn move_and_press() {
         let mouse = Mouse::new();
         mouse.move_to(500, 500);
+        let pos = mouse.get_position().unwrap();
+        assert!(pos.x == 500);
         mouse.press(&Keys::RIGHT).expect("Unable to press button");
         mouse.release(&Keys::RIGHT).expect("Something went wrong");
         mouse.click(&Keys::WHEEL).expect("Something went wrong");
