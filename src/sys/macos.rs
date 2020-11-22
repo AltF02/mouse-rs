@@ -95,7 +95,7 @@ impl Mouse {
     pub fn release<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn error::Error + 'a>> {
         let (event_type, mouse_button) = match button {
             Keys::LEFT => Ok((CGEventType::LeftMouseUp, CGMouseButton::Left)),
-            Keys::MIDDLE => Ok((CGEventType::OtherMouseUp, CGMouseButton::Center)),
+            Keys::WHEEL | Keys::MIDDLE => Ok((CGEventType::OtherMouseUp, CGMouseButton::Center)),
             Keys::RIGHT => Ok((CGEventType::RightMouseUp, CGMouseButton::Right)),
             _ => Err(Box::new(Error::InvalidButtonStr(""))),
         }?;

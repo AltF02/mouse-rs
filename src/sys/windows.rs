@@ -30,6 +30,9 @@ fn win_translate_key(key: (&Keys, &Keys)) -> i32 {
         (Keys::DOWN, Keys::MIDDLE) => MOUSEEVENTF_MIDDLEDOWN,
         (Keys::UP, Keys::MIDDLE) => MOUSEEVENTF_MIDDLEUP,
 
+        (Keys::DOWN, Keys::WHEEL) => MOUSEEVENTF_MIDDLEDOWN,
+        (Keys::UP, Keys::WHEEL) => MOUSEEVENTF_MIDDLEUP,
+
         (Keys::DOWN, Keys::X) => MOUSEEVENTF_XDOWN,
         (Keys::UP, Keys::X) => MOUSEEVENTF_XUP,
         _ => panic!("Invalid parameter passed, please use constants from types::keys"),
