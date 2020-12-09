@@ -9,13 +9,23 @@ use std::{ptr};
 
 type XDO = *const c_void;
 type WINDOW = c_int;
+type INTPTR = *mut c_int;
 
 fn xdo_translate_key(key: &Keys) -> c_int {
     match key {
         Keys::LEFT => 1,
-        Keys::MIDDLE => 2,
+        Keys::WHEEL | Keys::MIDDLE => 2,
         Keys::RIGHT => 3,
-        _ => panic!("Invalid key passed")
+        _ => panic!("Invalid key passed: {:?}", key)
+    }
+}
+
+impl From<(c_int, c_int)> for Point {
+    fn from(other: (c_int, c_int)) -> Point {
+        Point {
+            x: other.0 as _,
+            y: other.1 as _,
+        }
     }
 }
 
@@ -32,6 +42,7 @@ extern "C" {
     fn xdo_mouse_down(xdo: XDO, window: WINDOW, button: c_int);
     fn xdo_mouse_up(xdo: XDO, window: WINDOW, button: c_int);
     fn xdo_click_window(xdo: XDO, window: WINDOW, button: c_int);
+    fn xdo_get_mouse_location(xdo: XDO, x: INTPTR, y: INTPTR, screen_num: INTPTR);
 }
 
 impl Mouse {
@@ -64,7 +75,16 @@ impl Mouse {
     }
 
     pub fn get_position(&self) -> Result<Point, Box<dyn Error>> {
-        unimplemented!()
+        let pos: Point;
+        unsafe {
+            let mut x: c_int = 0;
+            let mut y: c_int = 0;
+            let mut _screen_num: c_int = 0;
+            xdo_get_mouse_location(self.xdo, &mut x as INTPTR, &mut y as INTPTR, &mut _screen_num as INTPTR);
+            pos = (x, y).into();
+        }
+
+        Ok(pos)
     }
 
     pub fn wheel(&self, mut delta: i32) -> Result<(), Box<dyn std::error::Error>> {
