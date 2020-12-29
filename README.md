@@ -35,7 +35,22 @@ For more information please visit the [docs](https://docs.rs/mouse-rs/*/mouse_rs
 ## Linux disclaimer
 If you're running into problems building on linux you need to install libxdo-dev.
 
-#### Ubuntu
+#### Debian-based
 ```bash
 sudo apt-get install libxdo-dev
+```
+
+### Arch
+```bash
+sudo pacman -Sy xdotool
+```
+
+### Fedora
+```bash
+sudo dnf install libX11-devel libxdo-devel
+```
+
+### Gentoo
+```bash
+sudo emerge xdotool
 ```
