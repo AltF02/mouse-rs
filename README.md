@@ -37,20 +37,20 @@ If you're running into problems building on linux you need to install libxdo-dev
 
 #### Debian-based
 ```bash
-sudo apt-get install libxdo-dev
+sudo apt-get install -y libxdo-dev
 ```
 
-### Arch
+#### Arch
 ```bash
 sudo pacman -Sy xdotool
 ```
 
-### Fedora
+#### Fedora
 ```bash
 sudo dnf install libX11-devel libxdo-devel
 ```
 
-### Gentoo
+#### Gentoo
 ```bash
 sudo emerge xdotool
 ```
