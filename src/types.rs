@@ -3,8 +3,8 @@ use std::fmt;
 pub mod keys;
 
 pub struct Point {
-    pub x: usize,
-    pub y: usize,
+    pub x: i32,
+    pub y: i32,
 }
 
 impl fmt::Debug for Point {
