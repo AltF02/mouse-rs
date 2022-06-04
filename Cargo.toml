@@ -1,13 +1,13 @@
 [package]
 name = "mouse-rs"
-version = "0.4.1"
-authors = ["DankDumpster <staalkoper@gmail.com>"]
+version = "0.4.2"
+authors = ["AltF2 <contact@altf2.dev>"]
 edition = "2018"
-license = "GPL-3.0"
+license = "MIT"
 readme = "README.md"
 homepage = "https://docs.rs/mouse-rs/*/mouse_rs/"
 description = "Library to control your mouse via rust"
-repository = "https://github.com/DankDumpster/mouse-rs"
+repository = "https://github.com/AltF02/mouse-rs"
 keywords = ["mouse", "input", "winapi"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
