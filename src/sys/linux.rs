@@ -37,6 +37,7 @@ pub struct Mouse {
 #[link(name = "xdo")]
 extern "C" {
     fn xdo_new(display: *const c_char) -> XDO;
+    fn xdo_free(xdo: XDO);
 
     fn xdo_move_mouse(xdo: XDO, x: c_int, y: c_int, screen: c_int) -> c_int;
     fn xdo_mouse_down(xdo: XDO, window: WINDOW, button: c_int);
@@ -100,5 +101,13 @@ impl Mouse {
             }
         }
         Ok(())
+    }
+}
+
+impl Drop for Mouse {
+    fn drop(&mut self) {
+        unsafe { 
+            xdo_free(self.xdo); 
+        }
     }
 }
