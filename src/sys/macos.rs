@@ -1,7 +1,6 @@
 use std::{error, fmt};
 
 use core_graphics::{
-    display::{CGDisplayMoveCursorToPoint, CGError, CGMainDisplayID},
     event::{CGEvent, CGEventTapLocation, CGEventType, CGMouseButton, ScrollEventUnit},
     event_source::{CGEventSource, CGEventSourceStateID},
     geometry::CGPoint,
@@ -26,7 +25,6 @@ impl Into<CGPoint> for Point {
 
 #[derive(Debug)]
 pub enum Error<'a> {
-    CGDisplayMoveCursorToPoint(CGError),
     CGEventNotCreated,
     CGEventSourceStateInvalid,
 
@@ -38,9 +36,6 @@ impl<'a> error::Error for Error<'a> {}
 impl<'a> fmt::Display for Error<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Error::CGDisplayMoveCursorToPoint(err) => {
-                write!(f, "error in call to CGDisplayMoveCursorToPoint: {}", err)
-            }
             Error::CGEventNotCreated => write!(f, "CGEvent could not be created"),
             Error::CGEventSourceStateInvalid => write!(f, "invalid CGEventSourceStateID"),
 
@@ -66,10 +61,16 @@ impl Mouse {
     pub fn move_to(&self, x: i32, y: i32) -> Result<(), Box<dyn error::Error>> {
         let point = CGPoint::new(x as _, y as _);
 
-        match unsafe { CGDisplayMoveCursorToPoint(CGMainDisplayID(), point) } {
-            0 => Ok(()),
-            err => Err(Box::new(Error::CGDisplayMoveCursorToPoint(err))),
-        }
+        CGEvent::new_mouse_event(
+            Self::event_source()?,
+            CGEventType::MouseMoved,
+            point,
+            CGMouseButton::Left, // ignored
+        )
+        .or(Err(Error::CGEventNotCreated))?
+        .post(CGEventTapLocation::HID);
+
+        Ok(())
     }
 
     pub fn press<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn error::Error + 'a>> {
