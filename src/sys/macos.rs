@@ -6,20 +6,24 @@ use core_graphics::{
     geometry::CGPoint,
 };
 
-use crate::types::{keys::*, Point};
+use crate::types::{keys::Keys, Point};
 
 impl From<CGPoint> for Point {
-    fn from(other: CGPoint) -> Point {
-        Point {
+    #[allow(clippy::cast_possible_truncation)]
+    fn from(other: CGPoint) -> Self {
+        Self {
             x: other.x as _,
             y: other.y as _,
         }
     }
 }
 
-impl Into<CGPoint> for Point {
-    fn into(self) -> CGPoint {
-        CGPoint::new(self.x as _, self.y as _)
+impl From<Point> for CGPoint {
+    fn from(value: Point) -> Self {
+        Self {
+            x: value.x.into(),
+            y: value.y.into(),
+        }
     }
 }
 
@@ -39,7 +43,7 @@ impl<'a> fmt::Display for Error<'a> {
             Error::CGEventNotCreated => write!(f, "CGEvent could not be created"),
             Error::CGEventSourceStateInvalid => write!(f, "invalid CGEventSourceStateID"),
 
-            Error::InvalidButtonStr(button) => write!(f, "invalid button str: {:?}", button),
+            Error::InvalidButtonStr(button) => write!(f, "invalid button str: {button:?}"),
         }
     }
 }
@@ -48,18 +52,16 @@ pub struct Mouse;
 
 impl Mouse {
     fn event_source<'a>() -> Result<CGEventSource, Error<'a>> {
-        Ok(
-            CGEventSource::new(CGEventSourceStateID::CombinedSessionState)
-                .or(Err(Error::CGEventSourceStateInvalid))?,
-        )
+        CGEventSource::new(CGEventSourceStateID::CombinedSessionState)
+            .or(Err(Error::CGEventSourceStateInvalid))
     }
 
-    pub fn new() -> Mouse {
-        Mouse
+    pub const fn new() -> Self {
+        Self
     }
 
-    pub fn move_to(&self, x: i32, y: i32) -> Result<(), Box<dyn error::Error>> {
-        let point = CGPoint::new(x as _, y as _);
+    pub fn move_to(x: i32, y: i32) -> Result<(), Box<dyn error::Error>> {
+        let point = CGPoint::new(x.into(), y.into());
 
         CGEvent::new_mouse_event(
             Self::event_source()?,
@@ -73,7 +75,7 @@ impl Mouse {
         Ok(())
     }
 
-    pub fn press<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn error::Error + 'a>> {
+    pub fn press<'a>(button: &'a Keys) -> Result<(), Box<dyn error::Error + 'a>> {
         let (event_type, mouse_button) = match button {
             Keys::LEFT => Ok((CGEventType::LeftMouseDown, CGMouseButton::Left)),
             Keys::MIDDLE => Ok((CGEventType::OtherMouseDown, CGMouseButton::Center)),
@@ -84,7 +86,7 @@ impl Mouse {
         CGEvent::new_mouse_event(
             Self::event_source()?,
             event_type,
-            self.get_position()?.into(),
+            Self::get_position()?.into(),
             mouse_button,
         )
         .or(Err(Error::CGEventNotCreated))?
@@ -93,7 +95,7 @@ impl Mouse {
         Ok(())
     }
 
-    pub fn release<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn error::Error + 'a>> {
+    pub fn release<'a>(button: &'a Keys) -> Result<(), Box<dyn error::Error + 'a>> {
         let (event_type, mouse_button) = match button {
             Keys::LEFT => Ok((CGEventType::LeftMouseUp, CGMouseButton::Left)),
             Keys::WHEEL | Keys::MIDDLE => Ok((CGEventType::OtherMouseUp, CGMouseButton::Center)),
@@ -104,7 +106,7 @@ impl Mouse {
         CGEvent::new_mouse_event(
             Self::event_source()?,
             event_type,
-            self.get_position()?.into(),
+            Self::get_position()?.into(),
             mouse_button,
         )
         .or(Err(Error::CGEventNotCreated))?
@@ -113,14 +115,14 @@ impl Mouse {
         Ok(())
     }
 
-    pub fn get_position(&self) -> Result<Point, Box<dyn error::Error>> {
+    pub fn get_position() -> Result<Point, Box<dyn error::Error>> {
         Ok(CGEvent::new(Self::event_source()?)
             .or(Err(Error::CGEventNotCreated))?
             .location()
             .into())
     }
 
-    pub fn wheel(&self, delta: i32) -> Result<(), Box<dyn error::Error>> {
+    pub fn wheel(delta: i32) -> Result<(), Box<dyn error::Error>> {
         CGEvent::new_scroll_event(Self::event_source()?, ScrollEventUnit::LINE, 1, delta, 0, 0)
             .or(Err(Error::CGEventNotCreated))?
             .post(CGEventTapLocation::HID);

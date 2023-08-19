@@ -1,29 +1,27 @@
 #[cfg(test)]
-#[allow(unused_must_use)]
 mod mouse {
     use mouse_rs::{types::keys::Keys, Mouse};
 
     #[test]
     fn move_and_press() {
         let mouse = Mouse::new();
-        mouse.move_to(500, 500);
-        let pos = mouse.get_position().unwrap();
+        mouse.move_to(500, 500).expect("Unable to move mouse");
         mouse.press(&Keys::RIGHT).expect("Unable to press button");
-        mouse.release(&Keys::RIGHT).expect("Something went wrong");
-        mouse.click(&Keys::WHEEL).expect("Something went wrong");
+        mouse.release(&Keys::RIGHT).expect("Unable to release button");
+        mouse.click(&Keys::WHEEL).expect("Unable to click button");
     }
 
     #[test]
     fn scroll_wheel() {
         let mouse = Mouse::new();
-        mouse.wheel(1);
+        mouse.wheel(1).expect("Unable to scroll mouse");
     }
 
     #[test]
     fn press_button() {
         let mouse = Mouse::new();
-        mouse.press(&Keys::MIDDLE);
-        mouse.release(&Keys::MIDDLE);
+        mouse.press(&Keys::MIDDLE).expect("Unable to press button");
+        mouse.release(&Keys::MIDDLE).expect("Unable to release button");
     }
 
     // #[test]

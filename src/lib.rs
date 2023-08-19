@@ -29,9 +29,9 @@
 //! ```
 //!
 //! ## Linux disclaimer
-//! If you're running into problems building on linux you need to install libxdo-dev.
+//! If you're running into problems building on Linux, try installing libxdo-dev.
 //!
-//! #### Ubuntu
+//! ### Ubuntu
 //! ```bash
 //! sudo apt-get install libxdo-dev
 //! ```
