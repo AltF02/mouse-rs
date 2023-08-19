@@ -139,6 +139,17 @@ impl Mouse {
         sys::Mouse::release(button)?;
         Ok(())
     }
+
+    /// Move the mouse, relative to the current position.
+    ///
+    /// # Errors
+    ///
+    /// Fails if [`Self::get_position`] or [`Self::move_to`] fails.
+    pub fn move_by(&self, delta_x: i32, delta_y: i32) -> Result<(), Box<dyn std::error::Error>> {
+        let position = self.get_position()?;
+        self.move_to(position.x + delta_x, position.y + delta_y)?;
+        Ok(())
+    }
 }
 
 impl Default for Mouse {
