@@ -1,23 +1,24 @@
+use crate::sys;
 use crate::types::keys::Keys;
-use crate::{sys, types::Point};
+use crate::types::Point;
 
-/// Struct for the mouse
+/// Represents the user's mouse pointer.
 ///
-/// This struct represents a mouse and doesn't hold any values
+/// This is an abstraction of the internal [`sys::Mouse`] struct.
 pub struct Mouse(sys::Mouse);
 
-#[allow(unreachable_code, unused_variables)]
 impl Mouse {
-    /// This method creates a new mouse instance, must always be run before anything else
-    pub fn new() -> Mouse {
-        Mouse(sys::Mouse::new())
+    #[must_use]
+    /// Create a new [`Mouse`].
+    pub const fn new() -> Self {
+        Self(sys::Mouse::new())
     }
 
-    /// This method moves the mouse around
+    /// Move the mouse to the position `(x, y)`, where the origin `(0, 0)` is the top-left of the screen.
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```rust, no_run
     /// use mouse_rs::{types::keys::*, Mouse};
     ///
     /// fn move_mouse() {
@@ -26,17 +27,21 @@ impl Mouse {
     /// }
     ///
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Fails if the mouse cannot move to the position.
     pub fn move_to(&self, x: i32, y: i32) -> Result<(), Box<dyn std::error::Error>> {
-        self.0.move_to(x, y)
+        sys::Mouse::move_to(x, y)
     }
 
-    /// This method presses the given button in
+    /// Press a button on the mouse and hold it.
     ///
-    /// *NOTE: This doesn't release the button so it will keep pressing*
+    /// _NOTE: This doesn't release the button so it will be kept held until [`Self::release`] is called._
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```rust, no_run
     /// use mouse_rs::{types::keys::Keys, Mouse};
     ///
     /// fn press_button() {
@@ -50,16 +55,24 @@ impl Mouse {
     ///     mouse.release(&Keys::RIGHT).expect("Unable to release button"); // This will press the right mouse quickly
     /// }
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Fails if the button cannot be pressed.
     pub fn press<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn std::error::Error + 'a>> {
-        self.0.press(button)
+        sys::Mouse::press(button)
     }
 
-    /// This will release the button as noted above
+    /// Release a button. Normally used after [`Self::press`].
+    ///
+    /// # Errors
+    ///
+    /// Fails if the button cannot be released.
     pub fn release<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn std::error::Error + 'a>> {
-        self.0.release(button)
+        sys::Mouse::release(button)
     }
 
-    /// This gets the current mouse position
+    /// Return the current mouse position.
     ///
     /// # Example
     ///
@@ -72,13 +85,17 @@ impl Mouse {
     ///     println!("X = {}, Y = {}", pos.x, pos.y)
     /// }
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Fails if the mouse position cannot be retrieved.
     pub fn get_position(&self) -> Result<Point, Box<dyn std::error::Error>> {
-        self.0.get_position()
+        sys::Mouse::get_position()
     }
 
-    /// This will scroll the mouse,
+    /// Scroll the mouse.
     ///
-    /// For scrolling down use negative values, for scrolling up use positive values
+    /// For scrolling down use negative values, for scrolling up use positive values.
     ///
     /// # Examples
     ///
@@ -95,18 +112,37 @@ impl Mouse {
     ///     mouse.wheel(-1);
     /// }
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Fails if the mouse cannot be scrolled.
     pub fn wheel(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
-        self.0.wheel(delta)
+        sys::Mouse::wheel(delta)
     }
 
-    /// This is the exact same as wheel
+    /// Alias for [`Self::wheel`].
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::wheel`].
     pub fn scroll(&self, delta: i32) -> Result<(), Box<dyn std::error::Error>> {
-        self.0.wheel(delta)
+        sys::Mouse::wheel(delta)
     }
 
-    // Does the exact same thing as press and release combined, but into one function
+    /// Click a mouse button by pressing then releasing.
+    ///
+    /// # Errors
+    ///
+    /// Fails if [`Self::press`] or [`Self::release`] fails.
     pub fn click<'a>(&self, button: &'a Keys) -> Result<(), Box<dyn std::error::Error + 'a>> {
-        self.0.press(button).unwrap_or(());
-        self.0.release(button)
+        sys::Mouse::press(button)?;
+        sys::Mouse::release(button)?;
+        Ok(())
+    }
+}
+
+impl Default for Mouse {
+    fn default() -> Self {
+        Self::new()
     }
 }
